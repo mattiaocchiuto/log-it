@@ -1,0 +1,19 @@
+{
+  "name": "log-it",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mattiaocchiuto/log-it.git"
+  },
+  "author": "mattia occhiuto",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mattiaocchiuto/log-it/issues"
+  },
+  "homepage": "https://github.com/mattiaocchiuto/log-it#readme"
+}
