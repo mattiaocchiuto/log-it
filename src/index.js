@@ -1,37 +1,36 @@
 import 'babel-polyfill';
 
+const window = (typeof window !== 'undefined') ? window : {};
+
 // Default config values.
 const defaultConfig = {
     loggingFunction: () => true,
+    loadInWorker: true, // FIXME cambia il nome
 };
 
 // Config used by the module.
 const config = {};
 
-// Private function.
-const formatError = (error = {}) => {
-    return error;
-};
-
-const formatAndLogError = (error) => {
-
-};
+// ***** Private functions *****
+const formatError = (error = {}) => error;
 
 // Public function.
 const funcExecutor = (funcToCall, args = [], scope = undefined) => {
     try {
         funcToCall.apply(scope, ...args);
     } catch (e) {
-        config.loggingFunction();
+        // TODO trova modo per fare la compose nativa
+        config.loggingFunction(formatError(e));
 
         throw e;
     }
 };
 
+// FIXME capire se è permesso avere la window come default
 const attachGlobalHandler = (scope = window) => {
-    scope.onerror = function myErrorHandler() {
-        const formattedError = formatError({ ...arguments });
-        const 
+    scope.onerror = () => {
+        // TODO trova modo per fare la compose nativa
+        config.loggingFunction(formatError({ ...arguments }));
 
         return false;
     };
