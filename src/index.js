@@ -14,13 +14,11 @@ const defaultConfig = {
 // Config used by the module.
 let config = {};
 
-const sendErrorToLogger = formattedError => formattedError;
-
 export default function LogIt(userConfig = {}) {
     // TODO npm i --save-dev babel-preset-stage-2
     config = { ...defaultConfig, ...userConfig };
 
     return {
-        ...Catcher,
+        ...Catcher(config),
     };
 }

@@ -1,1 +1,3 @@
-export default () => true;
+export function sendErrorToLogger(formattedError) {
+    return formattedError;
+}

@@ -1,3 +1,5 @@
+import Logger from './logger';
+
 const formatError = error => error;
 
 export function funcExecutor(funcToCall, args = [], scope = undefined) {
