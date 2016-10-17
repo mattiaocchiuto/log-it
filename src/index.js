@@ -1,46 +1,26 @@
 import 'babel-polyfill';
 
-const window = (typeof window !== 'undefined') ? window : {};
+import Catcher from './catcher';
+import Logger from './logger';
 
 // Default config values.
 const defaultConfig = {
+    scope: (typeof window !== 'undefined') ? window : {},
     loggingFunction: () => true,
-    loadInWorker: true, // FIXME cambia il nome
+    useWorker: true,
+    errorBuffer: 5,
 };
 
 // Config used by the module.
-const config = {};
+let config = {};
 
-// ***** Private functions *****
-const formatError = (error = {}) => error;
+const sendErrorToLogger = formattedError => formattedError;
 
-// Public function.
-const funcExecutor = (funcToCall, args = [], scope = undefined) => {
-    try {
-        funcToCall.apply(scope, ...args);
-    } catch (e) {
-        // TODO trova modo per fare la compose nativa
-        config.loggingFunction(formatError(e));
-
-        throw e;
-    }
-};
-
-// FIXME capire se è permesso avere la window come default
-const attachGlobalHandler = (scope = window) => {
-    scope.onerror = () => {
-        // TODO trova modo per fare la compose nativa
-        config.loggingFunction(formatError({ ...arguments }));
-
-        return false;
-    };
-};
-
-export default function LogIt(userConfig = defaultConfig) {
-    Object.assign(config, userConfig);
+export default function LogIt(userConfig = {}) {
+    // TODO npm i --save-dev babel-preset-stage-2
+    config = { ...defaultConfig, ...userConfig };
 
     return {
-        funcExecutor,
-        attachGlobalHandler,
+        ...Catcher,
     };
 }
