@@ -1,10 +1,13 @@
+// @flow
 import Logger from './logger';
 
 const formatError = error => error;
 
-export function funcExecutor(funcToCall, args = [], scope = undefined) {
+let config: Object = {};
+
+function funcExecutor(funcToCall: function, args: ?Array<mixed> = [], scope: ?Object): void {
     try {
-        funcToCall.apply(scope, ...args);
+        funcToCall.apply(scope, args);
     } catch (e) {
         // TODO trova modo per fare la compose nativa
         config.loggingFunction(formatError(e));
@@ -13,7 +16,7 @@ export function funcExecutor(funcToCall, args = [], scope = undefined) {
     }
 };
 
-export function attachGlobalHandler() {
+function attachGlobalHandler(): void {
     config.scope.onerror = () => {
         // TODO trova modo per fare la compose nativa
         config.loggingFunction(formatError({ arguments }));
@@ -21,3 +24,12 @@ export function attachGlobalHandler() {
         return false;
     };
 };
+
+export default function Logger(mergedConfig: Object): Object {
+    config = mergedConfig;
+
+    return {
+        funcExecutor,
+        attachGlobalHandler,
+    };
+}
