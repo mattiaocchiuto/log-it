@@ -1,33 +1,47 @@
 // @flow
-import Logger from './logger';
+// import Logger from './logger';
 
-const formatError = error => error;
+let LoggerWorker = null;
+
+if (window && window.Worker) {
+    LoggerWorker = new Worker('logger.js');
+
+    LoggerWorker.onmessage = function (e) {
+        console.log('Message received from worker', e.data);
+    }
+}
 
 let config: Object = {};
 
 function funcExecutor(funcToCall: Function, args: ?Array<any> = [], scope: ?Object): void {
     try {
         funcToCall.apply(scope, args);
-    } catch (e) {
-        config.loggingFunction(formatError(e));
+    } catch (error) {
+        config.loggingFunction(config.formatError(error));
 
-        throw e;
+    throw e;
     }
 };
 
 function attachGlobalHandler(): void {
-    config.scope.onerror = () => {
-        config.loggingFunction(formatError({ arguments }));
+    console.log(LoggerWorker);
+    setTimeout(function() {
+        LoggerWorker.postMessage('prova', '*');
+    }, 1000);
+
+    config.scope.onerror = (...args) => {
+        LoggerWorker && (LoggerWorker.postMessage('prova'));
+        //config.loggingFunction(config.formatError.call(undefined, args));
 
         return false;
     };
 };
 
-export default function Logger(mergedConfig: Object): Object {
-    config = mergedConfig;
+export default function Catcher(mergedConfig: Object): Object {
+        config = mergedConfig;
 
     return {
-        funcExecutor,
+        // funcExecutor,
         attachGlobalHandler,
     };
 }
