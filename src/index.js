@@ -4,17 +4,37 @@ import 'babel-polyfill';
 import Catcher from './catcher';
 import Logger from './logger';
 
+// Config interface.
 type LogConfig = {
   scope: Object,
   loggingFunction: Function,
+  formatError: Function,
   useWorker: boolean,
   errorBuffer: number,
 };
 
+function formatError(e) {
+    let errorName, file, line, col;
+
+    [errorName, file, line, col] = [...e];
+    
+    return {
+      errorName,
+      file,
+      line,
+      col,
+    };
+  }
+
+function loggingFunction({ errorName }: Object): any {
+    console.log(errorName);
+}
+
 // Default config values.
 const defaultConfig: LogConfig = {
     scope: (typeof window !== 'undefined') ? window : {},
-    loggingFunction: () => true,
+    loggingFunction,
+    formatError,
     useWorker: true,
     errorBuffer: 5,
 };
