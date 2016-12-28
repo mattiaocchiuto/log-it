@@ -45,6 +45,8 @@ let config = {};
 export default function LogIt(userConfig: ?Object = {}): Object {
     config = { ...defaultConfig, ...userConfig };
 
+    console.log(Catcher);
+
     return {
         ...Catcher(config),
     };
