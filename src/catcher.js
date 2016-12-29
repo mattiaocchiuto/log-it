@@ -1,47 +1,57 @@
-// @flow
 // import Logger from './logger';
 
 let LoggerWorker = null;
+let config = {};
+
+function initializeWorker(worker, config) {
+    worker.postMessage({
+        type: 'initialization',
+        payload: config,
+    });
+}
 
 if (window && window.Worker) {
-    LoggerWorker = new Worker('logger.js');
+    LoggerWorker = new Worker('/src/logger.js');
 
     LoggerWorker.onmessage = function (e) {
         console.log('Message received from worker', e.data);
-    }
+    };
 }
 
-let config: Object = {};
-
-function funcExecutor(funcToCall: Function, args: ?Array<any> = [], scope: ?Object): void {
+function funcExecutor(funcToCall, args, scope) {
     try {
         funcToCall.apply(scope, args);
     } catch (error) {
         config.loggingFunction(config.formatError(error));
 
-    throw e;
+        throw error;
     }
-};
+}
 
-function attachGlobalHandler(): void {
-    console.log(LoggerWorker);
-    setTimeout(function() {
-        LoggerWorker.postMessage('prova', '*');
-    }, 1000);
+function attachGlobalHandler() {
+    window.onerror = (...args) => {
+        if (LoggerWorker) {
+            LoggerWorker.postMessage({
+                type: 'onerror',
+                payload: JSON.stringify(config.formatError.call(undefined, args)),
+            });
+        }
 
-    config.scope.onerror = (...args) => {
-        LoggerWorker && (LoggerWorker.postMessage('prova'));
-        //config.loggingFunction(config.formatError.call(undefined, args));
-
-        return false;
+        return true;
     };
-};
+}
 
-export default function Catcher(mergedConfig: Object): Object {
-        config = mergedConfig;
+export default function Catcher(mergedConfig) {
+    config = mergedConfig;
+    
+    LoggerWorker.postMessage(
+        // {
+        // type: 'initialization',
+        // payload: JSON.stringify(config),}
+        config.loggingFunction,
+    );
 
     return {
-        // funcExecutor,
         attachGlobalHandler,
     };
 }
