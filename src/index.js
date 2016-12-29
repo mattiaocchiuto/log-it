@@ -39,6 +39,8 @@ let config = {};
 export function LogIt(userConfig) {
     userConfig = userConfig || {};
 
+    console.log(Catcher);
+
     return {
         ...Catcher({ ...defaultConfig, ...userConfig }),
     };
