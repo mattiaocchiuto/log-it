@@ -4,11 +4,14 @@ var libraryName = 'LogIt';
 var fileName = 'index';
 
 module.exports = {
-    entry: ['./src/' + fileName + '.js'],
+    entry: {
+        index: './src/index.js',
+        'logger_worker': './src/logger_worker.js',
+    },
     devtool: 'source-map',
     output: {
         path: __dirname,
-        filename: 'dist/' + fileName + '.min.js',
+        filename: 'dist/[name].min.js',
         libraryTarget: 'umd',
         library: libraryName,
         umdNamedDefine: true
@@ -27,7 +30,10 @@ module.exports = {
     },
     plugins: [
         new webpack.optimize.UglifyJsPlugin({
-            compress: { warnings: false }
-        })
-    ]
+            compress: { 
+                warnings: false,
+            },
+            mangle: false,
+        }),
+    ],
 };

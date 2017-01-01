@@ -13,10 +13,10 @@ function formatError(e) {
     const [errorName, file, line, col] = [...e];
 
     return {
-        errorName,
-        file,
-        line,
-        col,
+        errorName: errorName,
+        file: file,
+        line: line,
+        col: col,
     };
 }
 
@@ -26,9 +26,8 @@ function loggingFunction({ errorName }) {
 
 // Default config values.
 const defaultConfig = {
-    // scope: (typeof window !== 'undefined') ? window : {},
-    loggingFunction,
-    formatError,
+    loggingFunction: loggingFunction,
+    formatError: formatError,
     useWorker: true,
     errorBuffer: 5,
 };
@@ -38,8 +37,6 @@ let config = {};
 
 export function LogIt(userConfig) {
     userConfig = userConfig || {};
-
-    console.log(Catcher);
 
     return {
         ...Catcher({ ...defaultConfig, ...userConfig }),
