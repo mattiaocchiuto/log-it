@@ -12,13 +12,13 @@ function formatError(e) {
     };
 }
 
-function loggingFunction(errors) {
+function logErrorFunction(errors) {
     console.log(errors);
 }
 
 // Default config values.
 const defaultConfig = {
-    loggingFunction: loggingFunction,
+    logErrorFunction: logErrorFunction,
     formatError: formatError,
     useWorker: true,
     errorBuffer: 5,

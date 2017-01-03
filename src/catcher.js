@@ -15,7 +15,7 @@ function log(error) {
             payload: isObject(error) ? JSON.stringify(error) : error,
         });
     } else {
-        config.loggingFunction(error);
+        config.logErrorFunction(error);
     }
 }
 

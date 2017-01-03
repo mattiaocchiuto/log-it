@@ -1,4 +1,5 @@
 node_modules
 prove
+dist
 
 npm-debug.log

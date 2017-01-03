@@ -26,12 +26,12 @@ onmessage = function onmessage(msg) {
         payload = msg.data.payload;
       }
 
-      if (typeof loggingFunction === 'undefined' && config.loggingFunction) {
-        eval(config.loggingFunction);
+      if (typeof logErrorFunction === 'undefined' && config.logErrorFunction) {
+        eval(config.logErrorFunction);
       }
 
-      if (loggingFunction) {
-        loggingFunction(payload);
+      if (logErrorFunction) {
+        logErrorFunction(payload);
       }
 
       break;
