@@ -1,21 +1,23 @@
-import * as constants from './constants';
+// import * as constants from './constants';
 
 let config = {};
 
 function initializeConfig(customConfig) {
   config = customConfig;
+
+  return config;
 }
 
 onmessage = function onmessage(msg) {
   const response = 'hello, I am a web worker';
 
   switch (msg.data.type) {
-    case constants.INITIALIZATION_ACTION: {
+    case 'initialization': {
       initializeConfig(JSON.parse(msg.data.payload));
 
       break;
     }
-    case constants.ONERROR_ACTION: {
+    case 'onerror': {
       let payload = null;
 
       try {
@@ -24,9 +26,11 @@ onmessage = function onmessage(msg) {
         payload = msg.data.payload;
       }
 
-      if (config.loggingFunction) {
+      if (typeof loggingFunction === 'undefined' && config.loggingFunction) {
         eval(config.loggingFunction);
+      }
 
+      if (loggingFunction) {
         loggingFunction(payload);
       }
 

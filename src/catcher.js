@@ -1,29 +1,33 @@
-// import Logger from './logger';
+import * as constants from './constants';
+import ErrorQueue from './ErrorQueue.class';
 
 let LoggerWorker = null;
 let config = {};
 
 function isObject(val) {
-  return Object.getPrototypeOf(val) === Object.prototype;
+    return Object.getPrototypeOf(val) === Object.prototype;
 }
 
-if (window && window.Worker && config.useWorker) {
-    LoggerWorker = new Worker('/dist/logger_worker.min.js');
+function log(error) {
+    if (LoggerWorker && config.useWorker) {
+        LoggerWorker.postMessage({
+            type: constants.ONERROR_ACTION,
+            payload: isObject(error) ? JSON.stringify(error) : error,
+        });
+    } else {
+        config.loggingFunction(error);
+    }
+}
+
+if (window && window.Worker) {
+    LoggerWorker = new Worker('../src/logger_worker.js');
 }
 
 function attachGlobalHandler() {
-    window.onerror = (...args) => {
-        const formattedError = config.formatError.call(undefined, args);
-        const payload = isObject(formattedError) ? JSON.stringify(formattedError) : formattedError;
+    const errorQueue = new ErrorQueue(config.errorBuffer, log);
 
-        if (LoggerWorker) {
-            LoggerWorker.postMessage({
-                type: 'onerror',
-                payload: payload,
-            });
-        } else {
-            config.loggingFunction(config.formatError.call(undefined, args));
-        }
+    window.onerror = (...error) => {
+        errorQueue.addError(config.formatError.call(undefined, error));
 
         return true;
     };
@@ -32,9 +36,9 @@ function attachGlobalHandler() {
 export default function Catcher(mergedConfig) {
     config = mergedConfig;
 
-    if (LoggerWorker) {
+    if (config.useWorker) {
         LoggerWorker.postMessage({
-            type: 'initialization',
+            type: constants.INITIALIZATION_ACTION,
             payload: JSON.stringify(config, (key, val) => (typeof val === 'function') ? (`${val}`) : val),
         });
     }

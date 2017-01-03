@@ -1,27 +1,19 @@
 import Catcher from './catcher';
 
-// Config interface.
-// type LogConfig = {
-//   scope: Object,
-//   loggingFunction: Function,
-//   formatError: Function,
-//   useWorker: boolean,
-//   errorBuffer: number,
-// };
-
 function formatError(e) {
-    const [errorName, file, line, col] = [...e];
+    const [errorName, file, line, col, errorObj] = [...e];
 
     return {
         errorName: errorName,
         file: file,
         line: line,
         col: col,
+        stack: errorObj ? errorObj.stack : null,
     };
 }
 
-function loggingFunction({ errorName }) {
-    console.log(errorName);
+function loggingFunction(errors) {
+    console.log(errors);
 }
 
 // Default config values.
