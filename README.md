@@ -1,4 +1,8 @@
 # log-it
+Run from the main directory ```npm install```
+
+then
+
 ```html
 <script src="../dist/index.min.js" ></script>
 
