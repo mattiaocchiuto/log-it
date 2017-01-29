@@ -1,16 +1,14 @@
-# log-it
-LogIt is a library that give the capability to track the client side exceptions in a easy and programattically way.
+# LogIt
+LogIt is a library that give the capability to track the client side exceptions in a easy and programmatically way.
 
-This library works by adding a global erro handler that will catch all exceptions that will
-occurs in your application and track it using the configured functions.
+This library works by adding a global error handler that will catch all exceptions that will occurs in your application and track it using the configured functions.
 
-The library API provide a single function ```attachGlobalHandler``` which will take as 
-input a configuration object and attach a global error handler.
+The library API provide a single function ```attachGlobalHandler``` which will take as input a configuration object and attach a global error handler.
 
-##Configuration Object:
+##Configuration Object
 The library get a configuration object over wich you can overwrite the default behaviour.
 
-###Configuration Object descriptions:
+###Configuration Object descriptions
 . logErrorFunction <Function>: function called when an error occur, it will receive the formatted error
 . formatErrorFunction <Function>: function which take as input the raw Error Object catched by the global error
 handler and give you the ability to format it, the output of this function will be passed
@@ -23,7 +21,7 @@ choose the buffer dimension
 . preventExceptionBubbling <boolean>: if is true the Exception occurred will be bubbled up 
 to the console and not blocked in the global error handler
 
-###Configuration Object default values:
+###Configuration Object default values
 ```javascript
 const defaultConfig = {
   logErrorFunction: (error) => {
