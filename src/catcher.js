@@ -27,9 +27,11 @@ function attachGlobalHandler() {
     const errorQueue = new ErrorQueue(config.errorBuffer, log);
 
     window.onerror = (...error) => {
-        errorQueue.addError(config.formatError.call(undefined, error));
+        errorQueue.addError(config.formatErrorFunction.call(undefined, error));
 
-        return true;
+        if (config.preventExceptionBubbling) {
+            return true;
+        }
     };
 }
 

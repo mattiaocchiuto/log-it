@@ -1,6 +1,6 @@
 import Catcher from './catcher';
 
-function formatError(e) {
+function formatErrorFunction(e) {
     const [errorName, file, line, col, errorObj] = [...e];
 
     return {
@@ -19,9 +19,10 @@ function logErrorFunction(errors) {
 // Default config values.
 const defaultConfig = {
     logErrorFunction: logErrorFunction,
-    formatError: formatError,
+    formatErrorFunction: formatErrorFunction,
     useWorker: true,
-    errorBuffer: 5,
+    errorBuffer: 1,
+    preventExceptionBubbling: false,
 };
 
 // Config used by the module.
