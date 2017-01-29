@@ -29,7 +29,7 @@ const defaultConfig = {
         stack: errorObj ? errorObj.stack : null,
     };
   },
-  formatErrorFunction: () => console.log,
+  formatErrorFunction: console.log,
   useWorker: true,
   errorBuffer: 1,
   preventExceptionBubbling: false,
