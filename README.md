@@ -10,16 +10,10 @@ The library get a configuration object over wich you can overwrite the default b
 
 ###Configuration Object descriptions
 . logErrorFunction <Function>: function called when an error occur, it will receive the formatted error
-. formatErrorFunction <Function>: function which take as input the raw Error Object catched by the global error
-handler and give you the ability to format it, the output of this function will be passed
-to the logErrorFunction
-. useWorker <boolean>: if true the logErrorFunction will be called from a separate web worker
-this has be done with the aim of move the computation away from the main thread
-. errorBuffer <number>: you can chooce to execute the logErrorFunction not for every 
-Error triggered but only after a certain amount of it occur, with this parameter you can 
-choose the buffer dimension
-. preventExceptionBubbling <boolean>: if is true the Exception occurred will be bubbled up 
-to the console and not blocked in the global error handler
+. formatErrorFunction <Function>: function which take as input the raw Error Object catched by the global error handler and give you the ability to format it, the output of this function will be passed to the logErrorFunction
+. useWorker <boolean>: if true the logErrorFunction will be called from a separate web worker this has be done with the aim of move the computation away from the main thread
+. errorBuffer <number>: you can chooce to execute the logErrorFunction not for every Error triggered but only after a certain amount of it occur, with this parameter you can choose the buffer dimension
+. preventExceptionBubbling <boolean>: if is true the Exception occurred will be bubbled up to the console and not blocked in the global error handler
 
 ###Configuration Object default values
 ```javascript
