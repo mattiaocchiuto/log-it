@@ -56,3 +56,6 @@ Run  ```npm run build```
 
   setTimeout(brokeIt, 5000);
 </script>```
+
+## License
+This project is licensed under the terms of MIT License. See the LICENSE file for more info.
