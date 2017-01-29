@@ -51,7 +51,7 @@ Run  ```npm run build```
   LogIt.LogIt().attachGlobalHandler()
 
   function brokeIt() {
-    throw new Error('dai');
+    throw new Error('Fake error');
   }
 
   setTimeout(brokeIt, 5000);
